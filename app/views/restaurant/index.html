@@ -1,0 +1,38 @@
+{{set . "title" "Search"}}
+{{template "header.html" .}}
+
+<h1>Search Restaurants in Yelp</h1>
+
+<form action="/Restaurant/Search" method="GET">
+    {{with $term := field "term" . }}
+    <table>
+        <tr>
+            <td>Search By Name:</td>
+            <td><input type="text" id="search_term"  size="100" name="term" placeholder="Search Name (e.g. “Starbucks”, “coffee”, pizza, etc.)"></td>
+        </tr>
+        <tr>
+            <td>Search By Location:</td>
+            <td><input type="text" id="search_location" size="100" name="location" placeholder="Search Location (e.g. “Tokyo”, “Japan”, “Singapore”, “Jakarta”, “Raffless Place, Singapore”)"></td>
+        </tr>
+        <tr>
+            <td>Maximum results:</td>
+            <td>
+                <select id="size" name="limit">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                </select>
+            </td>
+        </tr>
+        <tr></tr>
+        <tr>
+            <td>
+                <input type="submit" id="submit" value="Find Restaurants">
+            </td>
+        </tr>
+    </table>
+    {{end}}
+</form>
+
+<div id="result">
+</div>

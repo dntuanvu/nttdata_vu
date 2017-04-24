@@ -1,0 +1,16 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+GET           /                                   Restaurant.Index
+
+# POST        /restaurants                        Restaurant.Create
+# PUT         /restaurants                        Restaurant.Update
+# GET         /restaurants/:id                    Restaurant.Show
+# DELETE      /restaurants/:id                    Restaurant.Delete
+
+# Map static resources from the /app/public folder to the /public path
+GET     /favicon.ico                            Static.Serve("public/img","favicon.png")
+
+# Catch all
+*       /:controller/:action                  :controller.:action

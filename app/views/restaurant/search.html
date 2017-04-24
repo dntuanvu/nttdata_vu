@@ -1,0 +1,97 @@
+{{set . "title" "Search"}}
+{{template "header.html" .}}
+
+<a href="/">Back to main page</a>
+
+<div id="result">
+</div>
+
+<script type="text/javascript" charset="utf-8">
+  // Rebuild state
+  $('#search').val(sessvars.search)
+  if(sessvars.page == undefined) {
+      sessvars.page = 1
+  }
+  if(sessvars.size == undefined) {
+      sessvars.size = 10
+  }
+  $('#size option[value='+sessvars.size+']').attr('selected', 'true')
+
+  // Search function
+  var search = function() {
+      sessvars.search = $('#search').val()
+      sessvars.size = $('#size').val()
+      $.get("/post/list", {
+        "search": sessvars.search,
+        "size": sessvars.size,
+        "page": sessvars.page
+      }, function(data) {
+          $('#result').html(data)
+          $('#content').css('visibility', 'visible')
+      })
+  }
+
+  // Events handler
+  $('#submit').click(function() {
+      sessvars.page = 1
+      search()
+  })
+  $('#search').keyup(function() {
+      sessvars.page = 1
+      search()
+  })
+  $('#nextPage').live('click', function(e) {
+      sessvars.page = $(this).attr('href')
+      e.preventDefault()
+      search()
+  })
+
+  // Init
+  if(sessvars.search != undefined) {
+      $('#content').css('visibility', 'hidden')
+      search()
+  }
+
+  $('#gobutton').click(function() {
+      alert("View In Map")
+  })
+
+</script>
+
+{{if not .restaurants}}
+<p>
+    No Restaurants Found
+</p>
+{{else}}
+<table>
+    <thead>
+    <tr>
+        <th></th>
+        <th width="30%">Name</th>
+        <th>DisplayPhone</th>
+        <th>Phone</th>
+        <th>Price</th>
+        <th>Rating</th>
+        <th>Review Count</th>
+        <th width="13%">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{range .restaurants}}
+    <tr>
+        <td><img src={{.ImageURL}} style="width:50px;height:50px;" /></td>
+        <td>{{.Name}}</td>
+        <td>{{.DisplayPhone}}</td>
+        <td>{{.Phone}}</td>
+        <td>{{.Price}}</td>
+        <td>{{.Rating}}</td>
+        <td>{{.ReviewCount}}</td>
+        <td>
+            <button id="gobutton">View In Map</button>
+        </td>
+
+    </tr>
+    {{end}}
+    </tbody>
+</table>
+{{end}}
